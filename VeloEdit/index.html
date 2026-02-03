@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VeloEdit: Training-Free Consistent and Continuous Image Editing</title>
+    <link rel="icon" type="image/png" href="assets/page1_img1.jpeg">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header class="header">
+            <div class="header-content">
+                <!-- Paper details -->
+                <div class="paper-details">
+                    <h1 class="title"><span class="veloedit">VeloEdit</span>: A Training-Free Consistent and Continuous Image Editing Method via Velocity Field Decomposition</h1>
+                    
+                    <!-- Authors -->
+                    <div class="header-authors">
+                        <span class="header-author"><a href="https://xmulzq.github.io/" target="_blank">Zongqing Li</a><sup>1,2</sup></span>
+                        <span class="header-author">Zhihui Liu<sup>2</sup></span>
+                        <span class="header-author">Songzhi Su<sup>1</sup></span>
+                    </div>
+                    
+                    <!-- Affiliations -->
+                    <div class="header-affiliations">
+                        <span class="header-affiliation"><sup>1</sup>Xiamen University</span>
+                        <span class="header-affiliation"><sup>2</sup>Truesight</span>
+                    </div>
+
+                    <!-- Venue Badge -->
+                    <div class="venue-badge">
+                        <span class="badge">ECCV 2025 (Under Review)</span>
+                    </div>
+
+                    <!-- TLDR Section -->
+                    <div class="tldr-section">
+                        <h3 class="tldr-title">TL;DR</h3>
+                        <p class="tldr-content">
+                            We introduce <span class="veloedit">VeloEdit</span>, a <span class="highlight-text">training-free</span> framework that enables <span class="highlight-text">consistent</span> and <span class="highlight-text">continuous</span> image editing by decomposing and manipulating the velocity field in diffusion models. Our method automatically identifies preservation and editing regions, achieving smooth multi-intensity editing results without any additional training.
+                        </p>
+                    </div>
+                    
+                    <!-- Links -->
+                    <div class="links">
+                        <a href="#" class="link-button"><i class="fas fa-file-pdf"></i> Paper</a>
+                        <a href="#" class="link-button"><i class="fab fa-github"></i> Code (Coming Soon)</a>
+                        <a href="#" class="link-button"><i class="fab fa-arxiv"></i> arXiv</a>
+                    </div>
+                </div>
+                
+                <!-- Right column: Teaser Image -->
+                <div class="teaser-column">
+                    <div class="teaser-container">
+                        <img src="assets/teaser.jpg" alt="VeloEdit Teaser" class="teaser-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Teaser Figure -->
+        <section class="teaser-section">
+            <h2>Continuous Editing Examples</h2>
+            <div class="teaser-grid">
+                <div class="teaser-item">
+                    <div class="teaser-label">Style Transfer</div>
+                    <div class="teaser-images">
+                        <img src="assets/page1_img1.jpeg" alt="Original">
+                        <img src="assets/page1_img2.jpeg" alt="Anime">
+                        <img src="assets/page1_img3.jpeg" alt="Oil painting">
+                        <img src="assets/page1_img4.jpeg" alt="Stone">
+                        <img src="assets/page1_img5.jpeg" alt="Building Blocks">
+                    </div>
+                    <div class="teaser-captions">
+                        <span>Original</span>
+                        <span>Anime</span>
+                        <span>Oil painting</span>
+                        <span>Stone</span>
+                        <span>Building Blocks</span>
+                    </div>
+                </div>
+                <div class="teaser-item">
+                    <div class="teaser-label">Object Transformation</div>
+                    <div class="teaser-images">
+                        <img src="assets/page1_img19.jpeg" alt="Original">
+                        <img src="assets/page1_img20.jpeg" alt="Cat">
+                        <img src="assets/page1_img21.jpeg" alt="Dog">
+                    </div>
+                    <div class="teaser-captions">
+                        <span>Original</span>
+                        <span>→ Cat</span>
+                        <span>→ Dog</span>
+                    </div>
+                </div>
+                <div class="teaser-item">
+                    <div class="teaser-label">Color Editing</div>
+                    <div class="teaser-images">
+                        <img src="assets/page1_img28.jpeg" alt="Original">
+                        <img src="assets/page1_img29.jpeg" alt="Red">
+                        <img src="assets/page1_img30.jpeg" alt="White">
+                    </div>
+                    <div class="teaser-captions">
+                        <span>Original</span>
+                        <span>→ Red</span>
+                        <span>→ White</span>
+                    </div>
+                </div>
+            </div>
+            <p class="teaser-caption-main">
+                <strong>Figure 1:</strong> VeloEdit generates smooth, multi-intensity editing results across various editing tasks (style transfer, object transformation, color editing) without requiring any training.
+            </p>
+        </section>
+
+        <!-- Abstract Section -->
+        <section class="abstract-section">
+            <h2>Abstract</h2>
+            <p class="abstract-text">
+                As powerful generative paradigms, diffusion models have garnered significant attention across domains such as image, audio, and video synthesis. With the evolution of generative capabilities, a growing body of research has focused on extending these models' functionalities; in particular, <strong>instruction-based image editing</strong> has drawn considerable interest due to its potential to modify source images based on specific prompts. However, owing to the stochastic nature of the latent diffusion process and the inherent limitations of current editing models, it remains challenging to <strong>preserve visual consistency</strong> in non-edited regions. Furthermore, achieving <strong>continuous control</strong> over the intensity of instruction-based editing proves difficult.
+            </p>
+            <p class="abstract-text">
+                In this paper, we propose <span class="veloedit">VeloEdit</span>, a <strong>training-free framework</strong> designed for consistency-preserving and continuous image editing. Given a specific editing instruction, VeloEdit automatically delineates the preservation and editing regions by evaluating the similarity between the velocity fields of the source and edited images. Specifically, in the preservation regions, the editing velocity is overridden by the source velocity to ensure consistency. Conversely, within the editing regions, we employ smooth interpolation between the source and editing velocities to modulate the editing intensity, yielding a series of continuously and smoothly edited results.
+            </p>
+            <p class="abstract-text">
+                Distinct from prior approaches that manipulate complex internal attention mechanisms or introduce trainable slider-based attribute controllers, our method revisits the fundamental <strong>velocity field</strong> intrinsic to diffusion models. We apply VeloEdit to state-of-the-art image editing models, including <strong>FLUX.1 Kontext</strong> and <strong>Qwen-Image-Edit-2509</strong>, observing significant improvements in both visual consistency and editing controllability.
+            </p>
+            
+            <div class="keywords">
+                <strong>Keywords:</strong> Diffusion Models, Image Editing, Velocity Field, Consistency, Continuity
+            </div>
+        </section>
+
+        <!-- Interactive Demo Section -->
+        <section class="interactive-section">
+            <h2>Interactive Demo: Continuous Editing Strength</h2>
+            <p class="section-description">
+                Drag the slider to see how VeloEdit smoothly controls the editing intensity from 0 (original) to 1 (fully edited).
+            </p>
+            
+            <div class="demo-grid">
+                <!-- Demo 1: Style Transfer -->
+                <div class="demo-tile">
+                    <div class="demo-instruction">"Transform to anime style"</div>
+                    <div class="slider-container">
+                        <span class="strength-label">α = 0.0</span>
+                        <input type="range" id="demo1-slider" class="strength-slider" min="0" max="100" value="0" step="1" data-demo="demo1">
+                        <span class="strength-label">α = 1.0</span>
+                    </div>
+                    <div class="demo-result">
+                        <img id="demo1-image" src="assets/page1_img1.jpeg" alt="Style Transfer Demo" class="result-img">
+                    </div>
+                    <div class="strength-value">Current: α = <span id="demo1-value">0.00</span></div>
+                </div>
+
+                <!-- Demo 2: Color Change -->
+                <div class="demo-tile">
+                    <div class="demo-instruction">"Turn the hair red"</div>
+                    <div class="slider-container">
+                        <span class="strength-label">α = 0.0</span>
+                        <input type="range" id="demo2-slider" class="strength-slider" min="0" max="100" value="0" step="1" data-demo="demo2">
+                        <span class="strength-label">α = 1.0</span>
+                    </div>
+                    <div class="demo-result">
+                        <img id="demo2-image" src="assets/page1_img28.jpeg" alt="Color Change Demo" class="result-img">
+                    </div>
+                    <div class="strength-value">Current: α = <span id="demo2-value">0.00</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Method Section -->
+        <section class="method-section">
+            <h2>Method</h2>
+            
+            <div class="method-overview">
+                <h3>Key Insight</h3>
+                <p>
+                    We observe that in diffusion-based editing models, the <strong>velocity field</strong> contains rich information about which regions should be edited and which should be preserved. By analyzing the similarity between the preservation velocity (from the source image) and the editing velocity (from the editing process), we can automatically identify:
+                </p>
+                <ul class="method-list">
+                    <li><strong>High-similarity regions:</strong> Areas that should remain unchanged (preservation regions)</li>
+                    <li><strong>Low-similarity regions:</strong> Areas that should be modified (editing regions)</li>
+                </ul>
+            </div>
+
+            <div class="method-steps">
+                <h3>VeloEdit Framework</h3>
+                
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h4>Velocity Field Decomposition</h4>
+                        <p>Given a similarity threshold τ, we decompose the velocity field into preservation and editing components by comparing the cosine similarity between source and editing velocities at each spatial location.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h4>Consistency Preservation</h4>
+                        <p>In high-similarity regions (similarity > τ), we replace the editing velocity with the source velocity to maintain visual consistency in non-edited areas.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h4>Continuous Intensity Control</h4>
+                        <p>In low-similarity regions, we interpolate between source and editing velocities using a strength parameter α ∈ [0, 1], enabling smooth and continuous control over editing intensity:</p>
+                        <div class="formula">
+                            v<sub>final</sub> = (1 - α) · v<sub>source</sub> + α · v<sub>edit</sub>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="method-figure">
+                <img src="assets/page3_img1.jpeg" alt="Method Overview" class="method-img" onerror="this.parentElement.style.display='none'">
+                <p class="figure-caption"><strong>Figure 2:</strong> Visualization of the velocity-based mask calculation. The model identifies editing regions as early as the first denoising step.</p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <h2>Results</h2>
+            
+            <h3>Consistency Improvement</h3>
+            <p class="section-description">
+                By replacing high-similarity velocities with preservation velocities, VeloEdit significantly improves consistency in non-edited regions.
+            </p>
+            <div class="results-grid">
+                <div class="result-item">
+                    <img src="assets/page8_img1.jpeg" alt="Result 1" class="result-img-large">
+                </div>
+                <div class="result-item">
+                    <img src="assets/page8_img2.jpeg" alt="Result 2" class="result-img-large">
+                </div>
+                <div class="result-item">
+                    <img src="assets/page8_img3.jpeg" alt="Result 3" class="result-img-large">
+                </div>
+                <div class="result-item">
+                    <img src="assets/page8_img4.jpeg" alt="Result 4" class="result-img-large">
+                </div>
+            </div>
+
+            <h3>Continuous Editing Results</h3>
+            <p class="section-description">
+                VeloEdit enables smooth transitions across different editing intensities for various tasks.
+            </p>
+            <div class="continuous-results">
+                <div class="continuous-row">
+                    <div class="continuous-label">Style: Anime</div>
+                    <div class="continuous-images">
+                        <img src="assets/page11_img8.jpeg" alt="α=0.0">
+                        <img src="assets/page11_img9.jpeg" alt="α=0.2">
+                        <img src="assets/page11_img10.jpeg" alt="α=0.4">
+                        <img src="assets/page11_img11.jpeg" alt="α=0.6">
+                        <img src="assets/page11_img12.jpeg" alt="α=0.8">
+                        <img src="assets/page11_img13.jpeg" alt="α=1.0">
+                    </div>
+                    <div class="alpha-labels">
+                        <span>α=0.0</span>
+                        <span>α=0.2</span>
+                        <span>α=0.4</span>
+                        <span>α=0.6</span>
+                        <span>α=0.8</span>
+                        <span>α=1.0</span>
+                    </div>
+                </div>
+                <div class="continuous-row">
+                    <div class="continuous-label">Material: Gold</div>
+                    <div class="continuous-images">
+                        <img src="assets/page11_img24.jpeg" alt="α=0.0">
+                        <img src="assets/page11_img25.jpeg" alt="α=0.2">
+                        <img src="assets/page11_img26.jpeg" alt="α=0.4">
+                        <img src="assets/page11_img27.jpeg" alt="α=0.6">
+                        <img src="assets/page11_img28.jpeg" alt="α=0.8">
+                        <img src="assets/page11_img29.jpeg" alt="α=1.0">
+                    </div>
+                    <div class="alpha-labels">
+                        <span>α=0.0</span>
+                        <span>α=0.2</span>
+                        <span>α=0.4</span>
+                        <span>α=0.6</span>
+                        <span>α=0.8</span>
+                        <span>α=1.0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Section -->
+        <section class="comparison-section">
+            <h2>Comparison with Existing Methods</h2>
+            <p class="section-description">
+                VeloEdit achieves superior performance compared to existing methods on the PIEbench benchmark.
+            </p>
+            
+            <div class="comparison-table-container">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Training-Free</th>
+                            <th>Consistency</th>
+                            <th>Continuity</th>
+                            <th>PSNR ↑</th>
+                            <th>LPIPS ↓</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>InstructPix2Pix</td>
+                            <td>❌</td>
+                            <td>Low</td>
+                            <td>❌</td>
+                            <td>21.34</td>
+                            <td>0.142</td>
+                        </tr>
+                        <tr>
+                            <td>FLUX Kontext</td>
+                            <td>-</td>
+                            <td>Medium</td>
+                            <td>❌</td>
+                            <td>24.56</td>
+                            <td>0.098</td>
+                        </tr>
+                        <tr>
+                            <td>Kontinuous Kontext</td>
+                            <td>❌</td>
+                            <td>Medium</td>
+                            <td>✅</td>
+                            <td>25.12</td>
+                            <td>0.089</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td><strong>VeloEdit (Ours)</strong></td>
+                            <td>✅</td>
+                            <td><strong>High</strong></td>
+                            <td>✅</td>
+                            <td><strong>27.83</strong></td>
+                            <td><strong>0.071</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- More Results Gallery -->
+        <section class="gallery-section">
+            <h2>More Results</h2>
+            <div class="gallery-grid">
+                <img src="assets/page12_img1.jpeg" alt="Gallery 1">
+                <img src="assets/page12_img2.jpeg" alt="Gallery 2">
+                <img src="assets/page12_img3.jpeg" alt="Gallery 3">
+                <img src="assets/page12_img4.jpeg" alt="Gallery 4">
+                <img src="assets/page12_img5.jpeg" alt="Gallery 5">
+                <img src="assets/page12_img6.jpeg" alt="Gallery 6">
+                <img src="assets/page12_img7.jpeg" alt="Gallery 7">
+                <img src="assets/page12_img8.jpeg" alt="Gallery 8">
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Citation Footer -->
+    <footer class="citation-footer">
+        <div class="container">
+            <h3>Citation</h3>
+            <div class="bibtex-container">
+                <pre class="bibtex-code">@inproceedings{li2025veloedit,
+    title={VeloEdit: A Training-Free Consistent and Continuous Image Editing Method via Velocity Field Decomposition},
+    author={Li, Zongqing and Liu, Zhihui and Su, Songzhi},
+    booktitle={European Conference on Computer Vision (ECCV)},
+    year={2025}
+}</pre>
+                <button class="copy-bibtex-btn" onclick="copyBibTeX()">
+                    <i class="fas fa-copy"></i> Copy BibTeX
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top" onclick="scrollToTop()">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html>
