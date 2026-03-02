@@ -1,0 +1,303 @@
+============================================================
+VeloEdit 自动生成的配置
+============================================================
+
+JavaScript 配置:
+------------------------------------------------------------
+const IMAGE_CONFIGS = {
+    'Add a graffiti to the girl's face': {
+        folder: 'assets/Add a graffiti to the girl's face_20260302_192112',
+        prompt: 'Add a graffiti to the girl's face',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Add flowers to the helmet': {
+        folder: 'assets/Add flowers to the helmet_20260302_195350',
+        prompt: 'Add flowers to the helmet',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Convert to color image': {
+        folder: 'assets/Convert to color image_20260302_200728',
+        prompt: 'Convert to color image',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Convert to pixel style': {
+        folder: 'assets/Convert to pixel style_20260302_195247',
+        prompt: 'Convert to pixel style',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'It is raining now': {
+        folder: 'assets/It is raining now_20260302_200910',
+        prompt: 'It is raining now',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Make the bird fluffy': {
+        folder: 'assets/Make the bird fluffy_20260302_212226',
+        prompt: 'Make the bird fluffy',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'The lake is frozen': {
+        folder: 'assets/The lake is frozen_20260302_201211',
+        prompt: 'The lake is frozen',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn into Van Gogh's style': {
+        folder: 'assets/Turn into Van Gogh's style_20260302_180845',
+        prompt: 'Turn into Van Gogh's style',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn into a simple line drawing': {
+        folder: 'assets/Turn into a simple line drawing_20260302_195307',
+        prompt: 'Turn into a simple line drawing',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn off the light': {
+        folder: 'assets/Turn off the light_20260302_174555',
+        prompt: 'Turn off the light',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.10,
+        count: 11
+    },
+    'Turn the horse into a bronze horse': {
+        folder: 'assets/Turn the horse into a bronze horse_20260302_193455',
+        prompt: 'Turn the horse into a bronze horse',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    }
+};
+
+============================================================
+HTML 滑杆代码:
+============================================================
+
+<!-- Example: Add a graffiti to the girl's face -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Add a graffiti to the girl's face'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-1" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-1" src="assets/Add a graffiti to the girl's face_20260302_192112/Add a graffiti to the girl's face_strength1.00.png" alt="Add a graffiti to the girl's face Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Add flowers to the helmet -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Add flowers to the helmet'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-2" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-2" src="assets/Add flowers to the helmet_20260302_195350/Add flowers to the helmet_strength1.00.png" alt="Add flowers to the helmet Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Convert to color image -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Convert to color image'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-3" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-3" src="assets/Convert to color image_20260302_200728/Convert to color image_strength1.00.png" alt="Convert to color image Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Convert to pixel style -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Convert to pixel style'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-4" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-4" src="assets/Convert to pixel style_20260302_195247/Convert to pixel style_strength1.00.png" alt="Convert to pixel style Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: It is raining now -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'It is raining now'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-5" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-5" src="assets/It is raining now_20260302_200910/It is raining now_strength1.00.png" alt="It is raining now Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Make the bird fluffy -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Make the bird fluffy'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-6" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-6" src="assets/Make the bird fluffy_20260302_212226/Make the bird fluffy_strength1.00.png" alt="Make the bird fluffy Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: The lake is frozen -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'The lake is frozen'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-7" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-7" src="assets/The lake is frozen_20260302_201211/The lake is frozen_strength1.00.png" alt="The lake is frozen Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Turn into Van Gogh's style -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Turn into Van Gogh's style'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-8" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-8" src="assets/Turn into Van Gogh's style_20260302_180845/Turn into Van Gogh's style_strength1.00.png" alt="Turn into Van Gogh's style Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Turn into a simple line drawing -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Turn into a simple line drawing'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-9" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-9" src="assets/Turn into a simple line drawing_20260302_195307/Turn into a simple line drawing_strength1.00.png" alt="Turn into a simple line drawing Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Turn off the light -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Turn off the light'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-10" class="strength-slider" min="0" max="10" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-10" src="assets/Turn off the light_20260302_174555/Turn off the light_strength1.00.png" alt="Turn off the light Result" class="result-img">
+    </div>
+</div>
+
+<!-- Example: Turn the horse into a bronze horse -->
+<div class="example-tile">
+    <div class="example-instruction">
+        'Turn the horse into a bronze horse'
+    </div>
+    <div class="example-slider-container">
+        <div class="slider-container">
+            <span class="strength-label">0.0</span>
+            <input type="range" id="slider-11" class="strength-slider" min="0" max="20" value="0" step="1">
+            <span class="strength-label">1.0</span>
+        </div>
+    </div>
+    <div class="example-result">
+        <img id="image-11" src="assets/Turn the horse into a bronze horse_20260302_193455/Turn the horse into a bronze horse_strength1.00.png" alt="Turn the horse into a bronze horse Result" class="result-img">
+    </div>
+</div>
+
+============================================================
+JavaScript Setup 代码:
+============================================================
+
+    setupAutoSlider('slider-1', 'image-1', "Add a graffiti to the girl's face");
+    setupAutoSlider('slider-2', 'image-2', "Add flowers to the helmet");
+    setupAutoSlider('slider-3', 'image-3', "Convert to color image");
+    setupAutoSlider('slider-4', 'image-4', "Convert to pixel style");
+    setupAutoSlider('slider-5', 'image-5', "It is raining now");
+    setupAutoSlider('slider-6', 'image-6', "Make the bird fluffy");
+    setupAutoSlider('slider-7', 'image-7', "The lake is frozen");
+    setupAutoSlider('slider-8', 'image-8', "Turn into Van Gogh's style");
+    setupAutoSlider('slider-9', 'image-9', "Turn into a simple line drawing");
+    setupAutoSlider('slider-10', 'image-10', "Turn off the light");
+    setupAutoSlider('slider-11', 'image-11', "Turn the horse into a bronze horse");

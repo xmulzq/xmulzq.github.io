@@ -6,7 +6,7 @@ permalink: /publication/2026-veloedit
 excerpt: 'We propose VeloEdit, a training-free method for image editing. By decomposing and manipulating the velocity field in diffusion models, it achieves **consistency-preserving** and **continuously controllable** image editing.'
 date: 2026-02-16
 venue: ' Under Review'
-paperurl: '/VeloEdit/'
+# paperurl: '/VeloEdit/'
 citation: 'Zongqing Li, Zhihui Liu, Yujie Xie, et al. VeloEdit: Training-Free Consistent and Continuous Instruction-Based Image Editing via Velocity Field Decomposition. TechRxiv. February 16, 2026.'
 ---
 

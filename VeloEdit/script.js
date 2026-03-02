@@ -1,171 +1,244 @@
-/* ============================================
-   VeloEdit Project Page Scripts
-   ============================================ */
+// VeloEdit Website JavaScript
 
-// Demo image mappings - map slider values to images
-const demoConfigs = {
-    demo1: {
-        // Style transfer demo - anime style
-        images: [
-            'assets/page1_img1.jpeg',   // α = 0.0
-            'assets/page1_img1.jpeg',   // α = 0.2
-            'assets/page1_img2.jpeg',   // α = 0.4
-            'assets/page1_img2.jpeg',   // α = 0.6
-            'assets/page1_img2.jpeg',   // α = 0.8
-            'assets/page1_img2.jpeg'    // α = 1.0
-        ]
+// Configuration: Define your image folders and prompts here
+const IMAGE_CONFIGS = {
+    'Add a graffiti to the girl\'s face': {
+        folder: 'assets/Add a graffiti to the girl\'s face_20260302_192112',
+        prompt: 'Add a graffiti to the girl\'s face',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
     },
-    demo2: {
-        // Color change demo - red hair
-        images: [
-            'assets/page1_img28.jpeg',  // α = 0.0
-            'assets/page1_img28.jpeg',  // α = 0.2
-            'assets/page1_img29.jpeg',  // α = 0.4
-            'assets/page1_img29.jpeg',  // α = 0.6
-            'assets/page1_img29.jpeg',  // α = 0.8
-            'assets/page1_img29.jpeg'   // α = 1.0
-        ]
+    'Add flowers to the helmet': {
+        folder: 'assets/Add flowers to the helmet_20260302_195350',
+        prompt: 'Add flowers to the helmet',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Convert to color image': {
+        folder: 'assets/Convert to color image_20260302_200728',
+        prompt: 'Convert to color image',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Convert to pixel style': {
+        folder: 'assets/Convert to pixel style_20260302_195247',
+        prompt: 'Convert to pixel style',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'It is raining now': {
+        folder: 'assets/It is raining now_20260302_200910',
+        prompt: 'It is raining now',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Make the bird fluffy': {
+        folder: 'assets/Make the bird fluffy_20260302_212226',
+        prompt: 'Make the bird fluffy',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'The lake is frozen': {
+        folder: 'assets/The lake is frozen_20260302_201211',
+        prompt: 'The lake is frozen',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn into Van Gogh\'s style': {
+        folder: 'assets/Turn into Van Gogh\'s style_20260302_180845',
+        prompt: 'Turn into Van Gogh\'s style',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn into a simple line drawing': {
+        folder: 'assets/Turn into a simple line drawing_20260302_195307',
+        prompt: 'Turn into a simple line drawing',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Turn off the light': {
+        folder: 'assets/Turn off the light_20260302_174555',
+        prompt: 'Turn off the light',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.10,
+        count: 11
+    },
+    'Turn the horse into a bronze horse': {
+        folder: 'assets/Turn the horse into a bronze horse_20260302_193455',
+        prompt: 'Turn the horse into a bronze horse',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Make her hair curly': {
+        folder: 'assets/Make her hair curly_20260302_215106',
+        prompt: 'Make her hair curly',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'make the car shiny and brand-new': {
+        folder: 'assets/make the car shiny and brand-new_20260302_221737',
+        prompt: 'make the car shiny and brand-new',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
+    },
+    'Change the background to grassland': {
+        folder: 'assets/Change the background to grassland_20260302_222413',
+        prompt: 'Change the background to grassland',
+        minStrength: 0.00,
+        maxStrength: 1.00,
+        step: 0.05,
+        count: 21
     }
 };
 
-// Initialize sliders
-document.addEventListener('DOMContentLoaded', function() {
-    initializeSliders();
-    initializeBackToTop();
-    initializeSmoothScroll();
-    preloadImages();
-});
-
-// Initialize all demo sliders
-function initializeSliders() {
-    const sliders = document.querySelectorAll('.strength-slider');
+/**
+ * Generate image mapping based on configuration
+ * @param {string} folderPath - Path to the image folder
+ * @param {string} promptName - Name of the prompt (used in filename)
+ * @param {number} minStrength - Minimum strength value
+ * @param {number} maxStrength - Maximum strength value
+ * @param {number} step - Step size between images
+ * @param {number} count - Total number of images
+ * @returns {Object} - Mapping of slider positions to image paths
+ */
+function generateImageMapping(folderPath, promptName, minStrength, maxStrength, step, count) {
+    const images = [];
     
-    sliders.forEach(slider => {
-        const demoId = slider.dataset.demo;
-        if (!demoId) return;
-        
-        slider.addEventListener('input', function() {
-            updateDemo(demoId, this.value);
-        });
-        
-        // Initialize with current value
-        updateDemo(demoId, slider.value);
-    });
-}
-
-// Update demo based on slider value
-function updateDemo(demoId, value) {
-    const config = demoConfigs[demoId];
-    if (!config) return;
-    
-    const imageElement = document.getElementById(`${demoId}-image`);
-    const valueElement = document.getElementById(`${demoId}-value`);
-    
-    if (!imageElement) return;
-    
-    // Calculate alpha value (0-1)
-    const alpha = value / 100;
-    
-    // Update value display
-    if (valueElement) {
-        valueElement.textContent = alpha.toFixed(2);
+    // Generate all image paths from minStrength to maxStrength
+    for (let i = 0; i < count; i++) {
+        let strength = (minStrength + i * step).toFixed(2);
+        let imagePath = `${folderPath}/${promptName}_strength${strength}.png`;
+        images.push({ strength: parseFloat(strength), path: imagePath });
     }
     
-    // Determine which image to show based on alpha
-    const imageIndex = Math.min(Math.floor(alpha * config.images.length), config.images.length - 1);
-    const newSrc = config.images[imageIndex];
+    // Sort by strength descending (highest strength first)
+    images.sort((a, b) => b.strength - a.strength);
     
-    // Only update if source changed
-    if (imageElement.src !== newSrc) {
-        // Add fade effect
-        imageElement.style.opacity = '0.7';
-        
-        setTimeout(() => {
-            imageElement.src = newSrc;
-            imageElement.style.opacity = '1';
-        }, 100);
+    // Create mapping: index 0 = highest strength, last index = lowest strength
+    const mapping = {};
+    images.forEach((img, index) => {
+        mapping[index] = img.path;
+    });
+    
+    return mapping;
+}
+
+/**
+ * Setup a slider with automatic image detection
+ * @param {string} sliderId - ID of the slider element
+ * @param {string} imageId - ID of the image element
+ * @param {string} configKey - Key in IMAGE_CONFIGS
+ */
+function setupAutoSlider(sliderId, imageId, configKey) {
+    const slider = document.getElementById(sliderId);
+    const image = document.getElementById(imageId);
+    
+    if (!slider || !image) return;
+    
+    const config = IMAGE_CONFIGS[configKey];
+    if (!config) {
+        console.error(`Configuration not found for: ${configKey}`);
+        return;
     }
-}
-
-// Preload images for smoother transitions
-function preloadImages() {
-    const allImages = new Set();
     
-    Object.values(demoConfigs).forEach(config => {
-        config.images.forEach(src => allImages.add(src));
-    });
+    // Generate image mapping
+    const imageMapping = generateImageMapping(
+        config.folder, 
+        config.prompt, 
+        config.minStrength, 
+        config.maxStrength, 
+        config.step, 
+        config.count
+    );
+    const maxIndex = config.count - 1;
     
-    allImages.forEach(src => {
-        const img = new Image();
-        img.src = src;
-    });
-}
-
-// Back to top button functionality
-function initializeBackToTop() {
-    const backToTopBtn = document.getElementById('back-to-top');
-    if (!backToTopBtn) return;
+    // Update slider max value
+    slider.max = maxIndex;
     
-    window.addEventListener('scroll', function() {
-        if (window.pageYOffset > 300) {
-            backToTopBtn.classList.add('visible');
-        } else {
-            backToTopBtn.classList.remove('visible');
+    // Setup event listener
+    slider.addEventListener('input', function() {
+        const sliderValue = parseInt(this.value);
+        if (imageMapping[sliderValue]) {
+            image.src = imageMapping[sliderValue];
         }
     });
+    
+    // Initialize with first image (highest strength)
+    if (imageMapping[0]) {
+        image.src = imageMapping[0];
+    }
 }
 
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
-
-// Smooth scroll for anchor links
-function initializeSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle teaser video
+    const teaserVideo = document.getElementById('teaser-video');
+    if (teaserVideo) {
+        teaserVideo.addEventListener('ended', function() {
+            setTimeout(() => {
+                teaserVideo.currentTime = 0;
+                teaserVideo.play();
+            }, 2000);
         });
-    });
-}
+    }
 
-// Copy BibTeX to clipboard
+    // Setup all sliders with auto-detection
+    setupAutoSlider('slider-1', 'image-1', "Add a graffiti to the girl's face");
+    setupAutoSlider('slider-2', 'image-2', "Add flowers to the helmet");
+    setupAutoSlider('slider-3', 'image-3', "Convert to color image");
+    setupAutoSlider('slider-4', 'image-4', "Convert to pixel style");
+    setupAutoSlider('slider-5', 'image-5', "It is raining now");
+    setupAutoSlider('slider-6', 'image-6', "Make the bird fluffy");
+    setupAutoSlider('slider-7', 'image-7', "The lake is frozen");
+    setupAutoSlider('slider-8', 'image-8', "Turn into Van Gogh's style");
+    setupAutoSlider('slider-9', 'image-9', "Turn into a simple line drawing");
+    setupAutoSlider('slider-10', 'image-10', "Turn off the light");
+    setupAutoSlider('slider-11', 'image-11', "Turn the horse into a bronze horse");
+    setupAutoSlider('slider-12', 'image-12', "Make her hair curly");
+    setupAutoSlider('slider-13', 'image-13', "make the car shiny and brand-new");
+    setupAutoSlider('slider-14', 'image-14', "Change the background to grassland");
+});
+
+// Copy BibTeX function
 function copyBibTeX() {
-    const bibtexCode = document.querySelector('.bibtex-code');
-    if (!bibtexCode) return;
+    const bibtexText = document.querySelector('.bibtex-code').textContent;
     
-    const text = bibtexCode.textContent;
-    
-    navigator.clipboard.writeText(text).then(() => {
-        // Show success feedback
-        const btn = document.querySelector('.copy-bibtex-btn');
-        const originalHTML = btn.innerHTML;
-        
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        btn.style.background = '#10b981';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-            btn.style.background = '';
-        }, 2000);
-    }).catch(err => {
-        console.error('Failed to copy:', err);
-        // Fallback for older browsers
-        fallbackCopyTextToClipboard(text);
-    });
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(bibtexText).then(() => {
+            showCopyFeedback();
+        }).catch(() => {
+            fallbackCopyToClipboard(bibtexText);
+        });
+    } else {
+        fallbackCopyToClipboard(bibtexText);
+    }
 }
 
-// Fallback copy function for older browsers
-function fallbackCopyTextToClipboard(text) {
+function fallbackCopyToClipboard(text) {
     const textArea = document.createElement('textarea');
     textArea.value = text;
     textArea.style.position = 'fixed';
@@ -177,154 +250,37 @@ function fallbackCopyTextToClipboard(text) {
     
     try {
         document.execCommand('copy');
-        const btn = document.querySelector('.copy-bibtex-btn');
-        const originalHTML = btn.innerHTML;
-        
-        btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-        btn.style.background = '#10b981';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-            btn.style.background = '';
-        }, 2000);
+        showCopyFeedback();
     } catch (err) {
-        console.error('Fallback: Could not copy text:', err);
+        console.error('Failed to copy text: ', err);
     }
     
     document.body.removeChild(textArea);
 }
 
-// Image lightbox functionality
+function showCopyFeedback() {
+    const button = document.querySelector('.copy-bibtex-btn');
+    const originalText = button.textContent;
+    
+    button.textContent = 'Copied!';
+    button.style.background = '#27ae60';
+    
+    setTimeout(() => {
+        button.textContent = originalText;
+        button.style.background = '#3498db';
+    }, 2000);
+}
+
+// Handle image loading errors gracefully
 document.addEventListener('DOMContentLoaded', function() {
-    // Create lightbox elements
-    const lightbox = document.createElement('div');
-    lightbox.id = 'lightbox';
-    lightbox.innerHTML = `
-        <div class="lightbox-overlay"></div>
-        <div class="lightbox-content">
-            <img src="" alt="Enlarged image">
-            <button class="lightbox-close">&times;</button>
-        </div>
-    `;
-    document.body.appendChild(lightbox);
+    const images = document.querySelectorAll('img');
     
-    // Add lightbox styles
-    const style = document.createElement('style');
-    style.textContent = `
-        #lightbox {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-        }
-        #lightbox.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .lightbox-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-        }
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-        }
-        .lightbox-content img {
-            max-width: 100%;
-            max-height: 90vh;
-            border-radius: 8px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-        .lightbox-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            padding: 0.5rem;
-            line-height: 1;
-        }
-        .lightbox-close:hover {
-            color: #60a5fa;
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Add click handlers to gallery images
-    const galleryImages = document.querySelectorAll('.gallery-grid img, .results-grid img, .continuous-images img');
-    galleryImages.forEach(img => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', function() {
-            const lightboxImg = lightbox.querySelector('img');
-            lightboxImg.src = this.src;
-            lightbox.classList.add('active');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.style.display = 'block';
+            this.style.backgroundColor = '#f8f9fa';
+            this.style.border = '2px dashed #ddd';
+            this.style.minHeight = '200px';
         });
     });
-    
-    // Close lightbox on click
-    lightbox.querySelector('.lightbox-overlay').addEventListener('click', closeLightbox);
-    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    
-    // Close on escape key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLightbox();
-        }
-    });
-    
-    function closeLightbox() {
-        lightbox.classList.remove('active');
-    }
 });
-
-// Intersection Observer for scroll animations
-document.addEventListener('DOMContentLoaded', function() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animate-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-    
-    // Observe sections
-    document.querySelectorAll('section').forEach(section => {
-        section.style.opacity = '0';
-        section.style.transform = 'translateY(20px)';
-        section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(section);
-    });
-    
-    // Add animate-in styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .animate-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
-});
-
-// Console welcome message
-console.log('%c VeloEdit Project Page ', 'background: linear-gradient(135deg, #2563eb, #7c3aed); color: white; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 5px;');
-console.log('A Training-Free Consistent and Continuous Image Editing Method via Velocity Field Decomposition');
-console.log('Authors: Zongqing Li, Zhihui Liu, Songzhi Su');
