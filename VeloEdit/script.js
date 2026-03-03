@@ -106,9 +106,9 @@ const IMAGE_CONFIGS = {
         step: 0.05,
         count: 21
     },
-    'Change the background to grassland': {
-        folder: 'assets/Change the background to grassland_20260302_222413',
-        prompt: 'Change the background to grassland',
+    'It is daytime now.': {
+        folder: 'assets/It is daytime now._20260303_093214',
+        prompt: 'It is daytime now.',
         minStrength: 0.00,
         maxStrength: 1.00,
         step: 0.05,
@@ -220,7 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupAutoSlider('slider-11', 'image-11', "Turn the horse into a bronze horse");
     setupAutoSlider('slider-12', 'image-12', "Make her hair curly");
     setupAutoSlider('slider-13', 'image-13', "make the car shiny and brand-new");
-    setupAutoSlider('slider-14', 'image-14', "Change the background to grassland");
+    setupAutoSlider('slider-14', 'image-14', "It is daytime now.");
 });
 
 // Copy BibTeX function
