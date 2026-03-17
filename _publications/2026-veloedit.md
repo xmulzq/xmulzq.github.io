@@ -25,6 +25,6 @@ Instruction-based image editing aims to modify source content according to textu
 
 - [Project Page](/VeloEdit/)
 - [Code](https://github.com/xmulzq/VeloEdit)
-- [Paper](https://www.techrxiv.org/users/1026061/articles/1385856-veloedit-training-free-consistent-and-continuous-instruction-based-image-editing-via-velocity-field-decomposition)
+- [Paper](https://arxiv.org/abs/2603.13388)
 
 **Keywords**: Image Editing, Consistency, Continuity
